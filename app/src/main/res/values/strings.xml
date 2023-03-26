@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">MAD Level 6 Task 2</string>
+    <string name="movie_list">Movie List</string>
+    <string name="movie_detail">Movie Detail</string>
+    <string name="movie">Movie</string>
+    <string name="search_hint">Search for movies!</string>
+    <string name="search">Search for a movie title…</string>
+    <string name="empty_search">Search query cannot be empty!</string>
+</resources>
