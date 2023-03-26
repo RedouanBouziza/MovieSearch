@@ -1,6 +1,8 @@
 package com.example.madlevel6task2.ui.screens
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -89,7 +91,7 @@ fun MovieList(
         horizontalAlignment = CenterHorizontally
     ) {
 
-        when  (searchResults) {
+        when (searchResults) {
             is Resource.Success -> {
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(110.dp),
@@ -150,7 +152,7 @@ fun MovieListItem(
     movie: Movie,
     navController: NavController,
     viewModel: MovieViewModel
-){
+) {
 
     Card(
         modifier = Modifier
@@ -204,17 +206,19 @@ fun SearchView(
         mutableStateOf(TextFieldValue(""))
     }
     val keyboardController = LocalSoftwareKeyboardController.current
+    val context = LocalContext.current
 
     TextField(
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(
-        onDone = {
-                if (searchQueryState.value.text == "") {
-                    errorMessage.value = "Please enter a search query"
-                } else {
-                    errorMessage.value = ""
-                    viewModel.searchMovies(apiKey, searchQueryState.value.text)
-                }
+            onDone = {
+                performSearch(
+                    searchQueryState = searchQueryState,
+                    errorMessage = errorMessage,
+                    viewModel = viewModel,
+                    apiKey = apiKey,
+                    context = context
+                )
                 keyboardController?.hide()
             }
         ),
@@ -228,12 +232,24 @@ fun SearchView(
         textStyle = TextStyle(color = Color.White, fontSize = 18.sp),
         leadingIcon = {
             IconButton(onClick = {
-                if (searchQueryState.value.text == "") {
-                    errorMessage.value = "Please enter a search query"
-                } else {
-                    errorMessage.value = ""
-                    viewModel.searchMovies(apiKey, searchQueryState.value.text)
-                }
+                performSearch(
+                    searchQueryState = searchQueryState,
+                    errorMessage = errorMessage,
+                    viewModel = viewModel,
+                    apiKey = apiKey,
+                    context = context
+                )
+//                if (searchQueryState.value.text == "") {
+//                    errorMessage.value = "Please enter a search query"
+//                    //only give a toast when there is movies in the list
+//                    if (viewModel.searchResults.value is Resource.Success) {
+//                        Toast.makeText(context, "Please enter a search query", Toast.LENGTH_SHORT)
+//                            .show()
+//                    }
+//                } else {
+//                    errorMessage.value = ""
+//                    viewModel.searchMovies(apiKey, searchQueryState.value.text)
+//                }
                 keyboardController?.hide()
             }) {
                 Icon(
@@ -250,7 +266,8 @@ fun SearchView(
                 IconButton(
                     onClick = {
                         searchQueryState.value =
-                            TextFieldValue("") // Remove text from TextField when you press the 'X' icon
+                            TextFieldValue("")
+                        viewModel.searchResults.value = Resource.Empty()
                     }
                 ) {
                     Icon(
@@ -283,6 +300,27 @@ fun SearchView(
         )
     )
 }
+
+
+private fun performSearch(
+    searchQueryState: MutableState<TextFieldValue>,
+    errorMessage: MutableState<String>,
+    viewModel: MovieViewModel,
+    apiKey: String,
+    context: Context,
+) {
+    if (searchQueryState.value.text == "") {
+        errorMessage.value = "Please enter a search query"
+        //only give a toast when there is movies in the list
+        if (viewModel.searchResults.value is Resource.Success) {
+            Toast.makeText(context, "Please enter a search query", Toast.LENGTH_SHORT).show()
+        }
+    } else {
+        errorMessage.value = ""
+        viewModel.searchMovies(apiKey, searchQueryState.value.text)
+    }
+}
+
 
 
 

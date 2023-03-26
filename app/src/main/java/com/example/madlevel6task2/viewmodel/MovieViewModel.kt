@@ -20,8 +20,10 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     val searchResults: MutableLiveData<Resource<MovieSearchResult>>
         get() = _searchResultsResource
 
-    private val _searchResultsResource: MutableLiveData<Resource<MovieSearchResult>> = MutableLiveData(
-        Resource.Empty())
+    private val _searchResultsResource: MutableLiveData<Resource<MovieSearchResult>> =
+        MutableLiveData(
+            Resource.Empty()
+        )
 
     fun searchMovies(apiKey: String, query: String) {
         _searchResultsResource.value = Resource.Loading()
@@ -31,21 +33,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun clearSearchResults() {
-        _searchResultsResource.value = Resource.Empty()
-    }
-
-    fun setSearchResults(searchResults: Resource<MovieSearchResult>) {
-        _searchResultsResource.value = searchResults
-    }
-
     fun setSelectedMovie(movie: Movie) {
         selectedMovie = movie
     }
-
-    fun clearSelectedMovie() {
-        selectedMovie = null
-    }
-
-
 }

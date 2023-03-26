@@ -18,8 +18,6 @@ import com.example.madlevel6task2.ui.screens.MovieScreens
 import com.example.madlevel6task2.viewmodel.MovieViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 
-
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +41,7 @@ private fun NavHostScreen(
         startDestination = MovieScreens.MovieListScreen.route,
         Modifier.padding(innerPadding)
     ) {
-        composable( MovieScreens.MovieListScreen.route,) {
+        composable(MovieScreens.MovieListScreen.route) {
             MovieList(
                 viewModel = viewModel,
                 navController = navController
