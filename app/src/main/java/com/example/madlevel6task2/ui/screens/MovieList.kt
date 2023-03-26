@@ -239,17 +239,6 @@ fun SearchView(
                     apiKey = apiKey,
                     context = context
                 )
-//                if (searchQueryState.value.text == "") {
-//                    errorMessage.value = "Please enter a search query"
-//                    //only give a toast when there is movies in the list
-//                    if (viewModel.searchResults.value is Resource.Success) {
-//                        Toast.makeText(context, "Please enter a search query", Toast.LENGTH_SHORT)
-//                            .show()
-//                    }
-//                } else {
-//                    errorMessage.value = ""
-//                    viewModel.searchMovies(apiKey, searchQueryState.value.text)
-//                }
                 keyboardController?.hide()
             }) {
                 Icon(
